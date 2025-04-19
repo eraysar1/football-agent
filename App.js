@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const players = [
   { id: '1', name: 'Ali Yalçın', age: 21, position: 'ST', potential: 84 },
@@ -19,7 +21,7 @@ function HomeScreen({ navigation }) {
       <Text style={styles.title}>Oyuncu Listesi</Text>
       <FlatList
         data={players}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.card}
@@ -50,11 +52,50 @@ function DetailScreen({ route }) {
   );
 }
 
+function TransferScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Transfer Ekranı</Text>
+      <Text style={styles.info}>Burada maaş, bonus ve süre seçimi olacak.</Text>
+    </View>
+  );
+}
+
+function ManagerScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Menajer Profili</Text>
+      <Text style={styles.info}>Bütçe: 1.000.000 $"</Text>
+      <Text style={styles.info}>Popülerlik: 50/100</Text>
+    </View>
+  );
+}
+
+function MediaScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Medya & Tweet Akışı</Text>
+      <Text style={styles.info}>“Ali Yalçın 2 gol attı!”</Text>
+    </View>
+  );
+}
+
+function Tabs() {
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Oyuncular" component={HomeScreen} />
+      <Tab.Screen name="Transfer" component={TransferScreen} />
+      <Tab.Screen name="Menajer" component={ManagerScreen} />
+      <Tab.Screen name="Medya" component={MediaScreen} />
+    </Tab.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Oyuncular" component={HomeScreen} />
+        <Stack.Screen name="Ana" component={Tabs} options={{ headerShown: false }} />
         <Stack.Screen name="Detay" component={DetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
